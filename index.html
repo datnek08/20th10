@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc mừng 20/10 - Ngày Phụ nữ Việt Nam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Main Container */
+        .main-container {
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Background with template image */
+        .bg-template {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('template.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        /* Overlay for better text readability */
+        .bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(2px);
+        }
+        
+        /* Canvas for hearts */
+        #heartsCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        /* Content wrapper */
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        /* Card styles */
+        .card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px 40px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Title styles */
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+        
+        .subtitle {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            text-align: center;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+        }
+        
+        .description {
+            text-align: center;
+            color: #555;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+        
+        /* Name buttons grid */
+        .names-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .name-btn {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 18px 25px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 25px rgba(255, 107, 157, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .name-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .name-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .name-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 107, 157, 0.5);
+        }
+        
+        .name-btn:active {
+            transform: translateY(-2px);
+        }
+        
+        /* Greeting page styles */
+        .greeting-content {
+            text-align: center;
+            animation: fadeInScale 0.6s ease-out;
+        }
+        
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .greeting-icon {
+            font-size: 5rem;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .greeting-message {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        
+        .greeting-footer {
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 30px;
+        }
+        
+        /* Action buttons */
+        .action-buttons {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+        
+        .action-btn {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .action-btn:hover {
+            background: white;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Music control button */
+        .music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .music-control:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.5);
+        }
+        
+        .music-control.playing {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Hidden class */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Loading overlay for autoplay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .start-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 600;
+            padding: 20px 50px;
+            cursor: pointer;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 45px rgba(102, 126, 234, 0.5);
+        }
+        
+        .loading-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.8rem;
+            }
+            
+            .card {
+                padding: 30px 20px;
+            }
+            
+            .names-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .greeting-message {
+                font-size: 1.3rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                bottom: 20px;
+            }
+            
+            .music-control {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading overlay for music autoplay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-text">🎵 Chào mừng bạn đến với 20/10 🎵</div>
+        <button class="start-btn" onclick="startExperience()">Bắt đầu ✨</button>
+    </div>
+
+    <!-- Background music -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="bai_nhac.mp3" type="audio/mpeg">
+        Trình duyệt của bạn không hỗ trợ phát nhạc.
+    </audio>
+    
+    <!-- Main Page -->
+    <div id="mainPage" class="main-container">
+        <div class="bg-template"></div>
+        <div class="bg-overlay"></div>
+        <canvas id="heartsCanvas"></canvas>
+        
+        <div class="content-wrapper">
+            <div class="card">
+                <h1 class="title">Chúc mừng ngày Phụ nữ Việt Nam</h1>
+                <div class="subtitle">20 / 10</div>
+                <p class="description">Chọn tên của bạn để nhận một lời chúc đặc biệt ✨</p>
+                
+                <div class="names-grid">
+                    <button class="name-btn" onclick="showGreeting('Thảo')">Thảo</button>
+                    <button class="name-btn" onclick="showGreeting('Thúy')">Thúy</button>
+                    <button class="name-btn" onclick="showGreeting('Nhi')">Nhi</button>
+                    <button class="name-btn" onclick="showGreeting('Diệu')">Diệu</button>
+                    <button class="name-btn" onclick="showGreeting('Dũng')">Dũng</button>
+                    <button class="name-btn" onclick="showGreeting('Thiện')">Thiện</button>
+                    <button class="name-btn" onclick="showGreeting('Đạt')">Đạt</button>
+                    <button class="name-btn" onclick="showGreeting('Chuẩn')">Chuẩn</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Greeting Page -->
+    <div id="greetingPage" class="main-container hidden">
+        <div class="bg-template"></div>
+        <div class="bg-overlay"></div>
+        <canvas id="greetingCanvas"></canvas>
+        
+        <div class="content-wrapper">
+            <div class="card">
+                <div id="greetingContent" class="greeting-content">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="action-btn" onclick="showRandomGreeting()">🔄 Lời chúc khác</button>
+            <button class="action-btn" onclick="goBack()">← Quay lại</button>
+        </div>
+    </div>
+    
+    <!-- Music control button -->
+    <button class="music-control playing" id="musicBtn" onclick="toggleMusic()">
+        🎶
+    </button>
+
+    <script>
+        // Greeting messages
+        const greetingMessages = [
+            "Chúc ngày hôm nay của {name} trôi qua nhẹ như mây, nhưng để lại dư vị vui như nắng đầu thu.",
+            "Không cần ai tặng hoa, vì chính {name} đã là điều đẹp đẽ mà người khác muốn nâng niu rồi.",
+            "20/10 là ngày của yêu thương — nên hãy để trái tim {name} được nghỉ một chút, để nụ cười được tỏa sáng thêm chút nữa.",
+            "Không có món quà nào hoàn hảo hơn việc {name} vẫn luôn là chính mình — dịu dàng, mạnh mẽ và đủ ấm áp.",
+            "Chúc {name} nhận đủ yêu thương, bớt lo âu và thêm niềm tin vào chính mình.",
+            "Mọi người đều cần một người như {name} — nhẹ nhàng nhưng khiến ai cũng cảm thấy bình yên.",
+            "Ngày 20/10 này, chúc {name} ngủ sớm, ăn ngon, mặc đẹp và chẳng có gì phải nghĩ nhiều.",
+            "{name} không cần trở thành ai khác — vì chỉ cần là {name} thôi, thế giới đã đủ rực rỡ rồi.",
+            "Một ngày tràn đầy hoa, ánh sáng và những tin nhắn bất ngờ khiến {name} mỉm cười.",
+            "Nếu hôm nay có ai đó mỉm cười vì {name}, thì đó chính là ý nghĩa thật sự của 20/10.",
+            "Hôm nay hãy 'xả stress' như đang trong chuyến du lịch không deadline và không tin nhắn công việc, {name} nhé!",
+            "20/10 — cho phép bản thân {name} được xinh, được lười, được ăn ngon mà chẳng cần lý do gì.",
+            "Đừng tìm 'bình yên', vì {name} chính là bình yên mà người khác đang tìm.",
+            "Hôm nay cứ đăng ảnh, cứ selfie, cứ xinh — vũ trụ sẽ auto 'thả tim' cho {name}.",
+            "Không cần phải hoàn hảo — chỉ cần {name} vui, là cả thế giới auto đẹp lên 10 tone màu.",
+            "Chúc {name} hôm nay bật mood tốt như playlist 'feel good vibes' yêu thích.",
+            "Hôm nay nếu trời đổ mưa, thì hãy coi đó là hoa trời tặng riêng {name} — theo phong cách vintage một chút.",
+            "20/10 mà không có ai tặng quà thì cũng chẳng sao — ít nhất {name} vẫn còn chính mình, và đó là món quà lớn nhất.",
+            "Chúc {name} hôm nay được tag tên trong nhiều story, và tất cả đều là lời yêu thương thật lòng.",
+            "Cảm ơn {name} vì đã hiện diện trong cuộc sống này — dịu dàng, kiên cường và luôn biết cách làm người khác mỉm cười."
+        ];
+        
+        const icons = ['🌸', '💜', '🌺', '🌿', '🌅', '🌊', '🌷', '🍂', '💖', '✨', '🌹', '🦋'];
+        
+        const greetings = {};
+        ["Thảo", "Thúy", "Nhi", "Diệu", "Dũng", "Thiện", "Đạt", "Chuẩn"].forEach(name => {
+            greetings[name] = greetingMessages.map((message, index) => ({
+                message: message.replace(/{name}/g, name),
+                icon: icons[index % icons.length]
+            }));
+        });
+        
+        let currentName = "";
+        let currentGreetingIndex = 0;
+        let musicPlaying = false;
+        
+        // Canvas setup for hearts animation
+        let canvas, ctx, hearts = [];
+        let greetingCanvas, greetingCtx, greetingHearts = [];
+        
+        function setupCanvas() {
+            canvas = document.getElementById('heartsCanvas');
+            ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            greetingCanvas = document.getElementById('greetingCanvas');
+            greetingCtx = greetingCanvas.getContext('2d');
+            greetingCanvas.width = window.innerWidth;
+            greetingCanvas.height = window.innerHeight;
+            
+            // Create initial hearts
+            for (let i = 0; i < 30; i++) {
+                hearts.push(createHeart());
+                greetingHearts.push(createHeart());
+            }
+            
+            animate();
+        }
+        
+        function createHeart() {
+            return {
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                size: Math.random() * 20 + 10,
+                speedX: (Math.random() - 0.5) * 2,
+                speedY: Math.random() * -2 - 1,
+                opacity: Math.random() * 0.5 + 0.3,
+                color: `rgba(255, ${Math.floor(Math.random() * 100 + 100)}, ${Math.floor(Math.random() * 100 + 150)}, ${Math.random() * 0.5 + 0.3})`
+            };
+        }
+        
+        function drawHeart(context, x, y, size, color) {
+            context.save();
+            context.fillStyle = color;
+            context.beginPath();
+            context.moveTo(x, y + size / 4);
+            context.bezierCurveTo(x, y, x - size / 2, y, x - size / 2, y + size / 4);
+            context.bezierCurveTo(x - size / 2, y + size / 2, x, y + size * 0.75, x, y + size);
+            context.bezierCurveTo(x, y + size * 0.75, x + size / 2, y + size / 2, x + size / 2, y + size / 4);
+            context.bezierCurveTo(x + size / 2, y, x, y, x, y + size / 4);
+            context.fill();
+            context.restore();
+        }
+        
+        function animate() {
+            // Main page animation
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hearts.forEach((heart, index) => {
+                drawHeart(ctx, heart.x, heart.y, heart.size, heart.color);
+                heart.x += heart.speedX;
+                heart.y += heart.speedY;
+                
+                if (heart.y + heart.size < 0) {
+                    hearts[index] = createHeart();
+                    hearts[index].y = canvas.height + heart.size;
+                }
+                
+                if (heart.x < -heart.size || heart.x > canvas.width + heart.size) {
+                    hearts[index].speedX *= -1;
+                }
+            });
+            
+            // Greeting page animation
+            greetingCtx.clearRect(0, 0, greetingCanvas.width, greetingCanvas.height);
+            greetingHearts.forEach((heart, index) => {
+                drawHeart(greetingCtx, heart.x, heart.y, heart.size, heart.color);
+                heart.x += heart.speedX;
+                heart.y += heart.speedY;
+                
+                if (heart.y + heart.size < 0) {
+                    greetingHearts[index] = createHeart();
+                    greetingHearts[index].y = greetingCanvas.height + heart.size;
+                }
+                
+                if (heart.x < -heart.size || heart.x > greetingCanvas.width + heart.size) {
+                    greetingHearts[index].speedX *= -1;
+                }
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        
+        function startExperience() {
+            const overlay = document.getElementById('loadingOverlay');
+            const music = document.getElementById('bgMusic');
+            
+            // Fade out overlay
+            overlay.classList.add('fade-out');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 500);
+            
+            // Start music
+            music.play().then(() => {
+                musicPlaying = true;
+                document.getElementById('musicBtn').classList.add('playing');
+            }).catch(err => {
+                console.log('Autoplay bị chặn:', err);
+                musicPlaying = false;
+                document.getElementById('musicBtn').classList.remove('playing');
+                document.getElementById('musicBtn').textContent = '🎵';
+            });
+        }
+        
+        function showGreeting(name) {
+            currentName = name;
+            currentGreetingIndex = Math.floor(Math.random() * greetingMessages.length);
+            
+            const greeting = greetings[name][currentGreetingIndex];
+            const mainPage = document.getElementById('mainPage');
+            const greetingPage = document.getElementById('greetingPage');
+            const greetingContent = document.getElementById('greetingContent');
+            
+            mainPage.classList.add('hidden');
+            
+            greetingContent.innerHTML = `
+                <div class="greeting-icon">${greeting.icon}</div>
+                <div class="greeting-message">${greeting.message}</div>
+                <div class="greeting-footer">Chúc mừng ngày Phụ nữ Việt Nam 20/10! 💖</div>
+            `;
+            
+            greetingPage.classList.remove('hidden');
+        }
+        
+        function showRandomGreeting() {
+            if (!currentName) return;
+            
+            const nameGreetings = greetings[currentName];
+            let newIndex;
+            
+            do {
+                newIndex = Math.floor(Math.random() * nameGreetings.length);
+            } while (newIndex === currentGreetingIndex && nameGreetings.length > 1);
+            
+            currentGreetingIndex = newIndex;
+            
+            const greeting = nameGreetings[currentGreetingIndex];
+            const greetingContent = document.getElementById('greetingContent');
+            
+            greetingContent.style.opacity = '0';
+            setTimeout(() => {
+                greetingContent.innerHTML = `
+                    <div class="greeting-icon">${greeting.icon}</div>
+                    <div class="greeting-message">${greeting.message}</div>
+                    <div class="greeting-footer">Chúc mừng ngày Phụ nữ Việt Nam 20/10! 💖</div>
+                `;
+                greetingContent.style.opacity = '1';
+            }, 200);
+        }
+        
+        function goBack() {
+            const mainPage = document.getElementById('mainPage');
+            const greetingPage = document.getElementById('greetingPage');
+            
+            greetingPage.classList.add('hidden');
+            mainPage.classList.remove('hidden');
+        }
+        
+        function toggleMusic() {
+            const music = document.getElementById('bgMusic');
+            const musicBtn = document.getElementById('musicBtn');
+            
+            if (musicPlaying) {
+                music.pause();
+                musicBtn.textContent = '🎵';
+                musicBtn.classList.remove('playing');
+            } else {
+                music.play().then(() => {
+                    musicBtn.textContent = '🎶';
+                    musicBtn.classList.add('playing');
+                }).catch(err => {
+                    console.log('Không thể phát nhạc:', err);
+                });
+            }
+            musicPlaying = !musicPlaying;
+        }
+        
+        // Initialize
+        window.addEventListener('load', () => {
+            setupCanvas();
+        });
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            greetingCanvas.width = window.innerWidth;
+            greetingCanvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>a
